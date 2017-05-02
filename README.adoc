@@ -1,0 +1,11 @@
+== Containerized LDAP service
+
+Yet another continerized LDAP service using OpenLDAP and LDIF config schema
+
+=== Parameters
+
+* base DN
+* admin DN
+* admin password
+* initial schema
+
