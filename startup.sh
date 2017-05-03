@@ -14,35 +14,36 @@ fi
 SUFFIX=$(echo $DOMAIN | sed -e 's/^/dc=/' -e 's/\./,dc=/g')
 ADMIN_DN=cn=${ADMIN_USERNAME},${SUFFIX}
 
-PW_HASH=$(slappasswd ${ADMIN_PASSWORD})
+PW_HASH=$(slappasswd -s ${ADMIN_PASSWORD})
 
-function set_suffix() {
-    # $1 = SUFFIX
-    
-}
+#function set_suffix() {
+#    # $1 = SUFFIX
+#    
+#}
 
-function set_admin_name() {
+#function set_admin_name() {
+#
+#}
 
-}
+#function set_admin_password() {
+#
+#}
 
-function set_admin_password() {
-
-}
-
-function add_db_root_element() {
-
-}
+#function add_db_root_element() {
+#
+#}
 
 
-/usr/sbin/slapd -d 1 -H "ldap:/// ldaps:/// ldapi:///"
-set_suffix ${SUFFIX}
-set_admin_name ${ADMIN_USERNAME}
-set_admin_password ${ADMIN_PASSWORD}
-add_db_root_element ${ADMIN_DN} ${ADMIN_PASSWORD} ${SUFFIX}
+#/usr/sbin/slapd -F /etc/openldap/slapd.d -u ldap -g ldap -h "ldap:/// ldaps:/// ldapi:///"
+#set_suffix ${SUFFIX}
+#set_admin_name ${ADMIN_USERNAME}
+#set_admin_password ${ADMIN_PASSWORD}
+#add_db_root_element ${ADMIN_DN} ${ADMIN_PASSWORD} ${SUFFIX}
 
 # stop daemon
 
 # exec daemon
+exit
 
 """
 sudo ldapmodify -Q -Y EXTERNAL -H ldapi:/// <<EOF
