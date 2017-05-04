@@ -9,6 +9,7 @@ if [ -z "${ADMIN_PASSWORD}" ] ; then
     echo "Missing required env ADMIN_PASSWORD"
     exit 2
 fi
+DESCRIPTION=${DESCRIPTION:-"A sample database"}
 
 # Convert inputs to LDAP DN form
 SUFFIX=$(echo $DOMAIN | sed -e 's/^/dc=/' -e 's/\./,dc=/g')
@@ -68,9 +69,9 @@ EOF
 
 /usr/sbin/slapd -F /etc/openldap/slapd.d -u ldap -g ldap -h "ldap:/// ldaps:/// ldapi:///"
 set_suffix ${SUFFIX}
-set_admin_name ${ADMIN_USERNAME}
+set_admin_name ${ADMIN_DN}
 set_admin_password ${ADMIN_PASSWORD}
-add_db_root_element ${ADMIN_PASSWORD ${ADMIN_DN} ${SUFFIX} ${ROOT_DC} "${DESCRIPTION}"
+add_db_root_element ${ADMIN_PASSWORD} ${ADMIN_DN} ${SUFFIX} ${ROOT_DC} "${DESCRIPTION}"
 
 # stop daemon
 
@@ -78,10 +79,3 @@ exit
 
 # exec daemon
 exec /usr/sbin/slapd -F /etc/openldap/slapd.d -u ldap -g ldap -h "ldap:/// ldaps:/// ldapi:///"
-
-"""
-
-
-
-
-
