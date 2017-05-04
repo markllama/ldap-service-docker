@@ -4,8 +4,15 @@ Yet another continerized LDAP service using OpenLDAP and LDIF config schema
 
 === Parameters
 
-* base DN
-* admin DN
-* admin password
-* initial schema
+* DOMAIN +
+  The domain served by this database.  This is converted to a DN for the
+  root of the database
+* ADMIN_USERNAME (default: Manager) +
+  The name of the admin user for this database.  Append as a CN to the base
+  DN for the database to create the admin DN
+* ADMIN_PASSWORD +
+  This is converted into an SSHA hash in the database
+* DESCRIPTION    (default: "A sample database") +
+  Please set this. Leaving the default is so pathetic (I'm looking at you
+  Apache Admins)
 
