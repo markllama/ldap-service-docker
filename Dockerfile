@@ -1,7 +1,7 @@
 FROM fedora:25
 
 # Install 
-RUN dnf -y install openldap-servers openldap-clients procps-ng ; dnf -y clean all
+RUN dnf -y install openldap-servers openldap-clients ; dnf -y clean all
 
 # Set configuration
 RUN cp /usr/share/openldap-servers/DB_CONFIG.example /var/lib/ldap/DB_CONFIG

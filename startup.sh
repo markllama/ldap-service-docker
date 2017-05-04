@@ -74,8 +74,7 @@ set_admin_password ${ADMIN_PASSWORD}
 add_db_root_element ${ADMIN_PASSWORD} ${ADMIN_DN} ${SUFFIX} ${ROOT_DC} "${DESCRIPTION}"
 
 # stop daemon
-
-exit
+kill $(grep -n slapd /proc/[0-9]*/comm | cut -d/ -f3)
 
 # exec daemon
 exec /usr/sbin/slapd -F /etc/openldap/slapd.d -u ldap -g ldap -h "ldap:/// ldaps:/// ldapi:///"
