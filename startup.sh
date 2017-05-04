@@ -67,7 +67,7 @@ EOF
 }
 
 
-/usr/sbin/slapd -F /etc/openldap/slapd.d -u ldap -g ldap -h "ldap:/// ldaps:/// ldapi:///"
+/usr/sbin/slapd -F /etc/openldap/slapd.d -u ldap -g ldap -h "ldapi:///"
 set_suffix ${SUFFIX}
 set_admin_name ${ADMIN_DN}
 set_admin_password ${ADMIN_PASSWORD}
