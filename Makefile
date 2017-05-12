@@ -7,5 +7,5 @@ shell:
 test:
 	docker run -d --name test-ldap \
 	  --env ADMIN_PASSWORD=password \
-	  --env DOMAIN=lamourine.homeunix.org \
+	  --env DOMAIN=lamourine.org \
 	  markllama/ldap 

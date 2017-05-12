@@ -25,10 +25,14 @@ RUN mkdir /tmp/slapd.d ; \
 # Set configuration
 RUN cp /usr/share/openldap-servers/DB_CONFIG.example /var/lib/ldap/DB_CONFIG
 
+# modified from bind-dyndb-ldap /usr/share/doc/bind/dyndb-ldap/schema.ldif
+ADD dns-openldap.ldif /etc/openldap/schema/dns.ldif
+
 # Add minimum schemas
 RUN su -s /bin/sh -c "/usr/sbin/slapadd -F /etc/openldap/slapd.d -n0 -l /etc/openldap/schema/cosine.ldif" ldap ; \
     su -s /bin/sh -c "/usr/sbin/slapadd -F /etc/openldap/slapd.d -n0 -l /etc/openldap/schema/inetorgperson.ldif" ldap ; \
-    su -s /bin/sh -c "/usr/sbin/slapadd -F /etc/openldap/slapd.d -n0 -l /etc/openldap/schema/dhcp.ldif" ldap
+    su -s /bin/sh -c "/usr/sbin/slapadd -F /etc/openldap/slapd.d -n0 -l /etc/openldap/schema/dhcp.ldif" ldap ; \
+    su -s /bin/sh -c "/usr/sbin/slapadd -F /etc/openldap/slapd.d -n0 -l /etc/openldap/schema/dns.ldif" ldap
 
 #
 ADD startup.sh /startup.sh

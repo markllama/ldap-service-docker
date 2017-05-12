@@ -16,3 +16,9 @@ Yet another continerized LDAP service using OpenLDAP and LDIF config schema
   Please set this. Leaving the default is so pathetic (I'm looking at you
   Apache Admins)
 
+=== Invocation
+
+	docker run -d --name ldap \
+	  --env DOMAIN=lamourine.homeunix.org \
+	  --env ADMIN_PASSWORD=password \
+	  markllama/ldap 
