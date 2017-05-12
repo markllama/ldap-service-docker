@@ -7,5 +7,9 @@ shell:
 test:
 	docker run -d --name test-ldap \
 	  --env ADMIN_PASSWORD=password \
-	  --env DOMAIN=lamourine.org \
-	  markllama/ldap 
+	  --env DOMAIN=example.com \
+	  markllama/ldap
+
+clean:
+	docker stop test-ldap ; \
+  docker rm test-ldap
