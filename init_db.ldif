@@ -1,0 +1,37 @@
+# Create the 
+#dn: {{ basedn }}
+#objectClass: domain
+#dc: {{ db_dc }
+#description: {{ db_description }}
+#
+# Create the organization and the tops of the most common Organizational Units:
+#  o=
+#  ou=People
+#  ou=Groups
+#  ou=Hosts
+#
+dn: o={{ orgname }},{{ basedn }}
+objectClass: organization
+description: Replace this with the description of your organization and add
+ location and contact information fields
+
+dn: ou=People,{{ basedn }}
+changetype: add
+ou: People
+objectClass: organizationalUnit
+description: This OU contains the set of humans and computer agents for this
+  organization
+
+dn: ou=Groups,{{ basedn }}
+changetype: add
+ou: Groups
+objectClass: organizationalUnit
+description: This OU contains the set of groupings and members within the
+ larger organization
+
+dn: ou=Hosts,{{ basedn }}
+changetype: add
+ou: Hosts
+objectClass: organizationalUnit
+description: This OU contains the set of computers for this organization
+

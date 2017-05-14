@@ -6,7 +6,7 @@ LABEL maintainer="Mark Lamourine <markllama@gmail.com>" \
       org.lamourine.release-date="2017-05-04"
 
 # Install packages (and remove unneeded one after pulling the schema)
-RUN dnf -y install openldap-servers openldap-clients dhcp-server ; \
+RUN dnf -y install openldap-servers openldap-clients python-jinja2-cli dhcp-server ; \
     mv /etc/openldap/schema/dhcp.schema /etc/openldap/schema/dhcp.schema.save ; \
     dnf -y remove dhcp-server ; \
     mv /etc/openldap/schema/dhcp.schema.save /etc/openldap/schema/dhcp.schema ; \
@@ -26,7 +26,7 @@ RUN mkdir /tmp/slapd.d ; \
 RUN cp /usr/share/openldap-servers/DB_CONFIG.example /var/lib/ldap/DB_CONFIG
 
 # modified from bind-dyndb-ldap /usr/share/doc/bind/dyndb-ldap/schema.ldif
-ADD dns-openldap.ldif /etc/openldap/schema/dns.ldif
+ADD dns-schema.ldif /etc/openldap/schema/dns.ldif
 
 # Add minimum schemas
 RUN su -s /bin/sh -c "/usr/sbin/slapadd -F /etc/openldap/slapd.d -n0 -l /etc/openldap/schema/cosine.ldif" ldap ; \
@@ -35,6 +35,9 @@ RUN su -s /bin/sh -c "/usr/sbin/slapadd -F /etc/openldap/slapd.d -n0 -l /etc/ope
     su -s /bin/sh -c "/usr/sbin/slapadd -F /etc/openldap/slapd.d -n0 -l /etc/openldap/schema/dns.ldif" ldap
 
 #
+ADD init_base.ldif.j2 /init_base.ldif.j2
+ADD init_ou.ldif.j2 /init_ou.ldif.j2
+
 ADD startup.sh /startup.sh
 
 # Make LDAP available

@@ -3,6 +3,7 @@
 # Initialize an LDAP database using LDIF slapd-config(5) format
 #
 #
+ORG_NAME=${ORG_NAME:-"Example Corporation"}
 DOMAIN=${DOMAIN:-example.com}
 ADMIN_USERNAME=${ADMIN:-Manager}
 if [ -z "${ADMIN_PASSWORD}" ] ; then
@@ -17,37 +18,18 @@ ROOT_DC=$(echo $DOMAIN | cut -d. -f1)
 ADMIN_DN=cn=${ADMIN_USERNAME},${SUFFIX}
 ADMIN_HASH=$(slappasswd -s ${ADMIN_PASSWORD})
 
-function set_suffix() {
-    # SUFFIX=$1
-
-    ldapmodify -Q -Y EXTERNAL -H ldapi:/// <<EOF
-dn: olcDatabase={2}mdb,cn=config
-changetype: modify
-replace: olcSuffix
-olcSuffix: $1
+function init_database() {
+    # BASEDN=$1
+    # ORG_NAME=$2
+    # ADMIN_DN=$3
+    # ADMIN_PW=$4
+    jinja2-2.7 /init_base.ldif.j2 <<EOF > /init_base.ldif
+basedn: '$1'
+orgname: '$2'
+rootdn: '$3'
+rootpw: '$4'
 EOF
-
-}
-
-function set_admin_name() {
-    # $ADMIN_DN=$1
-    ldapmodify -Q -Y EXTERNAL -H ldapi:/// <<EOF
-dn: olcDatabase={2}mdb,cn=config
-changetype: modify
-replace: olcRootDN
-olcRootDN: $1
-EOF
-
-}
-
-function set_admin_password() {
-    # ADMIN_HASH=$1
-    ldapmodify -Q -Y EXTERNAL -H ldapi:/// <<EOF
-dn: olcDatabase={2}mdb,cn=config
-changetype: modify
-add: olcRootPW
-olcRootPW: $1
-EOF
+    ldapmodify -Q -Y EXTERNAL -H ldapi:/// < /init_base.ldif
 
 }
 
@@ -56,7 +38,7 @@ function add_db_root_element() {
     # ADMIN_DN=$2
     # SUFFIX=$3
     # ROOT_DC=$4
-    # DESCRIPTION=$4
+    # DESCRIPTION=$5
     ldapadd -x -w $1 -D $2  -H ldapi:/// <<EOF
 dn: $3
 objectClass: domain
@@ -64,13 +46,22 @@ dc: $4
 description: $5
 EOF
 
+    jinja2-2.7 /init_ou.ldif.j2 <<EOF > /init_ou.ldif
+basedn: '$3'
+orgname: '$2'
+rootdn: '$3'
+rootpw: '$1'
+EOF
+    ldapadd -x -w $1 -D $2  -H ldapi:/// < /init_ou.ldif
 }
 
 
 /usr/sbin/slapd -F /etc/openldap/slapd.d -u ldap -g ldap -h "ldapi:///"
-set_suffix ${SUFFIX}
-set_admin_name ${ADMIN_DN}
-set_admin_password ${ADMIN_PASSWORD}
+#set_suffix ${SUFFIX}
+#set_admin_name ${ADMIN_DN}
+#set_admin_password ${ADMIN_PASSWORD}
+#set_admin_password ${ADMIN_HASH}
+init_database "${SUFFIX}" "${ORG_NAME}" "${ADMIN_DN}" "${ADMIN_HASH}"
 add_db_root_element ${ADMIN_PASSWORD} ${ADMIN_DN} ${SUFFIX} ${ROOT_DC} "${DESCRIPTION}"
 
 # stop daemon
