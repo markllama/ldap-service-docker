@@ -48,8 +48,7 @@ EOF
 
     jinja2-2.7 /init_ou.ldif.j2 <<EOF > /init_ou.ldif
 basedn: '$3'
-orgname: '$2'
-rootdn: '$3'
+rootdn: '$2'
 rootpw: '$1'
 EOF
     ldapadd -x -w $1 -D $2  -H ldapi:/// < /init_ou.ldif
@@ -64,8 +63,9 @@ EOF
 init_database "${SUFFIX}" "${ORG_NAME}" "${ADMIN_DN}" "${ADMIN_HASH}"
 add_db_root_element ${ADMIN_PASSWORD} ${ADMIN_DN} ${SUFFIX} ${ROOT_DC} "${DESCRIPTION}"
 
+
 # stop daemon
-kill $(grep -n slapd /proc/[0-9]*/comm | cut -d/ -f3)
+#kill $(grep -n slapd /proc/[0-9]*/comm | cut -d/ -f3)
 
 # exec daemon
-exec /usr/sbin/slapd -F /etc/openldap/slapd.d -u ldap -g ldap -h "ldap:/// ldaps:/// ldapi:///" -d 256
+#exec /usr/sbin/slapd -F /etc/openldap/slapd.d -u ldap -g ldap -h "ldap:/// ldaps:/// ldapi:///" -d 256
