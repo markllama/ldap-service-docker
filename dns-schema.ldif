@@ -406,3 +406,10 @@ olcObjectClasses: ( 2.16.840.1.113730.3.8.6.5
  SUP top 
  AUXILIARY 
  MUST ( idnsTemplateAttribute ) )
+#
+olcObjectClasses: ( 2.16.848.1.113730.3.8.6.7 
+ NAME 'idnsContainer' 
+ DESC 'DNS Server Container' 
+ SUP top 
+ STRUCTURAL 
+ MUST cn )

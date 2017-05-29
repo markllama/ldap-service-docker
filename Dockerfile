@@ -29,10 +29,14 @@ RUN cp /usr/share/openldap-servers/DB_CONFIG.example /var/lib/ldap/DB_CONFIG
 ADD dns-schema.ldif /etc/openldap/schema/dns.ldif
 
 # Add minimum schemas
-RUN su -s /bin/sh -c "/usr/sbin/slapadd -F /etc/openldap/slapd.d -n0 -l /etc/openldap/schema/cosine.ldif" ldap ; \
+RUN    su -s /bin/sh -c "/usr/sbin/slapadd -F /etc/openldap/slapd.d -n0 -l /etc/openldap/schema/cosine.ldif" ldap ; \
     su -s /bin/sh -c "/usr/sbin/slapadd -F /etc/openldap/slapd.d -n0 -l /etc/openldap/schema/inetorgperson.ldif" ldap ; \
-    su -s /bin/sh -c "/usr/sbin/slapadd -F /etc/openldap/slapd.d -n0 -l /etc/openldap/schema/dhcp.ldif" ldap ; \
-    su -s /bin/sh -c "/usr/sbin/slapadd -F /etc/openldap/slapd.d -n0 -l /etc/openldap/schema/dns.ldif" ldap
+    su -s /bin/sh -c "/usr/sbin/slapadd -F /etc/openldap/slapd.d -n0 -l /etc/openldap/schema/dhcp.ldif" ldap
+RUN     su -s /bin/sh -c "/usr/sbin/slapadd -F /etc/openldap/slapd.d -n0 -l /etc/openldap/schema/dns.ldif" ldap
+
+#ADD dnsContainer-schema.ldif /etc/openldap/schema/dnsContainer.ldif
+
+#RUN su -s /bin/sh -c "/usr/sbin/slapadd -F /etc/openldap/slapd.d -n0 -l /etc/openldap/schema/dnsContainer.ldif" ldap
 
 #
 ADD init_base.ldif.j2 /init_base.ldif.j2
